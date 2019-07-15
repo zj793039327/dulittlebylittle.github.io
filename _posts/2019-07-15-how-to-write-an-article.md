@@ -178,6 +178,12 @@ mac中最好的markdown编辑器，鄙人觉得叫做 Typora。其它的都不�
 
 ## 提交并且发布
 
+><div><font color='red'>注意1：之所以使用这样的提交策略，就是要让大家注意，别把你们项目中的隐私也一并提交，首先自己要保证一次，其次，博主也会有对应的审查。</font></div>
+>
+><font color='darkred'>注意2：写文章请原创，如果不是原创，请标明转载或或者征得作者同意再转载，如果有被侵权的朋友，也可以通过邮件反馈。</font><dulittlebylittle@yeah.net>
+
+-----
+
 对于已经写好的文章，如何提交到本博客中呢？由于已经首先folk了，这里的提交其实就是pull request了。简要的操作流程如下，我一步一步截图看下：
 
 1. 提交到自己的github中，并且push。
@@ -191,8 +197,9 @@ mac中最好的markdown编辑器，鄙人觉得叫做 Typora。其它的都不�
    1. 提交之后是这个样子的。可以看到有一个open的request，博客的管理员可以看到，如果审核通过之后，可以合并并且公开。![提交之后是这样子的](http://img.skydrift.cn/1563193025.png?imageMogr2/thumbnail/!70p)
    1. 管理员可以在自己的界面看到这里：![一个Pull requests](http://img.skydrift.cn/1563193211.png?imageMogr2/thumbnail/!70p)
 
-3. 等待博客管理员同意。![一个完整的通过了的request](http://img.skydrift.cn/1563193466.png)
+3. 等待博客管理员同意。![一个完整的通过了的request](http://img.skydrift.cn/1563194404.png)
 
 是不是很简单。
 
 当然本博客并不是十分开放，不是所有人提交都会合入的，哼。
+

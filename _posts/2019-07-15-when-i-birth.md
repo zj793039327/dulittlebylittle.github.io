@@ -21,6 +21,8 @@ mathjax: true # true 则开启加载数学公式
 
 本博客中，渲染markdown的引擎是 kramdown， 具体语法参见 [这里](https://kramdown.gettalong.org/syntax.html)。
 
+当然markdown最基础的语法请参照[这里](https://www.appinn.com/markdown/)。
+
 这里着重介绍下markdown的格式，参考：[wiki百科](https://zh.wikipedia.org/wiki/Markdown)。
 
 实际的编辑器，在MAC推荐使用 typora，很多时候，挺好用的。
