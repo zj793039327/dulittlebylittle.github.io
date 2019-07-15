@@ -3,7 +3,7 @@ layout: post
 title:  "hello world"
 categories: nothing
 tags: readme demo markdown
-author: J56
+author: j56
 comments: false # true 则开启评论
 mathjax: true # true 则开启加载数学公式
 ---
@@ -24,6 +24,12 @@ mathjax: true # true 则开启加载数学公式
 这里着重介绍下markdown的格式，参考：[wiki百科](https://zh.wikipedia.org/wiki/Markdown)。
 
 实际的编辑器，在MAC推荐使用 typora，很多时候，挺好用的。
+
+
+
+
+
+
 
 # 这是1号标题&目录
 这底下都是标题的，所有的标题都会自动进入到目录中，启用目录参见文章头部
