@@ -4,7 +4,8 @@ author: j56
 layout: post
 title:  "记一次数据库问题定位"
 date: 2019-07-25 17:09:22
-categories: translate
+categories: tech
+comments: true
 ---
 
 * content
@@ -102,3 +103,60 @@ SET GLOBAL general_log = 'ON';
 答案比较清晰了，首先使用 `@Transactional`在service层配置了事务，但是在dao层，又通过xml配置型advice设置了不开事务，最终dao层的代码先执行，没开事务。
 
 要问为啥代码这个样子，挖坑不填，出来混，总是要还的。
+
+## more than @Transactional
+
+既然发现了这么有意思的东西，突然想看下 事务中 不同的 Propagation（事务传播）在数据库层面会如何表示和实现。
+
+### Propagation取值
+
+#### REQUIRED（默认值）
+
+在有transaction状态下执行；如当前没有transaction，则创建新的transaction；
+
+这是最普通的状态，一般这是最开始的入口方法，采取这个方案。
+
+实现在mysql中，就是这么一句：
+
+```sql
+2019-07-29T13:07:18.364347Z7482451 Connect	root@localhost on xxxdatabase using TCP/IP
+2019-07-29T13:07:18.366558Z7482451 Query	SET NAMES utf8
+2019-07-29T13:07:18.367043Z7482451 Query	SET autocommit=1
+2019-07-29T13:07:18.367370Z7482451 Query	SET autocommit=0
+```
+
+本质是创建一个connection，并且设置autocommit=0。
+
+
+
+#### SUPPORTS && NOT_SUPPORTED
+
+这俩状态是随遇而安的典型，都不会抛异常，安安静静的执行。前者是有事务就用事务，没有就不用，不主动，不拒绝。后者是不管之前有没有，反正到我这里就没有
+
+SUPPORTS：如当前有transaction，则在transaction状态下执行；如果当前没有transaction，在无transaction状态下执行；
+
+NOT_SUPPORTED：在无transaction状态下执行；如果当前已有transaction，则将当前transaction挂起。
+
+这个实现方式就是上文中说过的，重新开连接，并且设置一个autocommit=1。
+
+#### MANDATORY && NEVER
+
+这俩状态是强制的典型，不符合预期就抛异常
+
+MANDATORY：必须在有transaction状态下执行，如果当前没有transaction，则抛出异常IllegalTransactionStateException；
+
+NEVER：在无transaction状态下执行；如果当前已有transaction，则抛出异 IllegalTransactionStateException。
+
+#### REQUIRES_NEW
+
+创建新的transaction并执行；如果当前已有transaction，则将当前transaction挂起；
+
+![](http://img.skydrift.cn/1564405699.png)
+
+从图中可以看出，这是通过创建一个新的TCP连接实现的，本质上和外部的事务已经没有关系了。
+
+这就导致下列的结论
+
+1. 内部的方法和外部的不是一个事务，无法保障同时成功失败。
+2. 内部的方法rollback，外部事务正常不会受到影响。
+
